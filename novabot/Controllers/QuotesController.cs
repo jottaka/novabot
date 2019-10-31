@@ -4,10 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using novabot.Models;
-using novabot.Repositories.interfaces;
+using NovaBot.Models;
+using NovaBot.Models.ViewModels;
+using NovaBot.Repositories.interfaces;
 
-namespace novabot.Controllers
+namespace NovaBot.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -25,51 +26,64 @@ namespace novabot.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetUsers([FromBody] QuoteModel quote){
-            try{
-                
-                var quoteId =  _quotesRepository.AddQuote(quote);
-
+        public async Task<IActionResult> AddQuote([FromBody] QuoteModel quote)
+        {
+            try
+            {
+                var quoteId = await _quotesRepository.AddQuoteAsync(quote);
                 return Ok(quoteId);
-
-            }catch(Exception e){
+            }
+            catch (Exception e)
+            {
                 _logger.LogError($"Não foi possivel adicionar quote: {e}");
                 return BadRequest();
             }
         }
 
-[HttpPost]
-        public IActionResult UpdateQuote([FromBody] QuoteModel quote){
-            try{
-                _quotesRepository.UpdateQuote(quote);
+        [HttpPost]
+        public async Task<IActionResult> UpdateQuote([FromBody] QuoteModel quote)
+        {
+            try
+            {
+                await _quotesRepository.UpdateQuoteAsync(quote);
                 return Ok();
 
-            }catch(Exception e){
+            }
+            catch (Exception e)
+            {
                 _logger.LogError($"Não foi possivel modificar quote: {e}");
                 return BadRequest();
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> List([FromBody] ListQuoteRequestModel request)
+        {
+            try
+            {
+                var response = await _quotesRepository.GetListAsync(request);
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Não foi possivel listar quotes: {e}");
+                return BadRequest();
+            }
+        }
+
 
         [HttpGet]
-        public IActionResult DeleteQuote([FromBody] string quoteId){
-            try{
-                _quotesRepository.DeleteQuote(quoteId);
+        public async Task<IActionResult> DeleteQuote([FromBody] string quoteId)
+        {
+            try
+            {
+                await _quotesRepository.DeleteQuoteAsync(quoteId);
                 return Ok();
 
-            }catch(Exception e){
-                _logger.LogError($"Não foi possivel deletar quote: {e}");
-                return BadRequest();
             }
-        }
-
-[HttpPost]
-        public IActionResult UpdateQuote([FromBody] QuoteModel quote){
-            try{
-                _quotesRepository.UpdateQuote(quote);
-                return Ok();
-
-            }catch(Exception e){
-                _logger.LogError($"Não foi possivel modificar quote: {e}");
+            catch (Exception e)
+            {
+                _logger.LogError($"Não foi possivel deletar quote: {e}");
                 return BadRequest();
             }
         }

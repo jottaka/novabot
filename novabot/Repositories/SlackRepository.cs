@@ -44,6 +44,21 @@ namespace NovaBot.Repositories
             }
         }
 
+
+        public async Task GetUserList()
+        {
+            try
+            {
+                
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+
+        }
+
         public async Task<string> AddQuoteAsync(string message)
         {
             throw new System.NotImplementedException();
