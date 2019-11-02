@@ -9,9 +9,8 @@ namespace NovaBot.Models.ViewModels
     {
         public int TotalQuotes { get; set; }
         public int NumberOfPages { get; set; }
-        public List<QuoteModel> quotes { get; set; }
+        public List<QuoteFullViewModel> Quotes { get; set; }
         public int PageNumber { get; set; }
-
 
     }
 

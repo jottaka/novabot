@@ -10,6 +10,13 @@ namespace NovaBot.Models.ViewModels
         public string ProfilePicture { get; set; }
         public string UserId { get; set; }
         public uint Ranking { get; set; }
+        public uint UpVotes { get; set; }
+        public uint DownVotes { get; set; }
+        public uint SnitchScore { get; set; }
+        public uint NumberOfQuotes { get; set; }
+
+
+
     }
 
 }

@@ -7,6 +7,9 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 
 import { AppRoutes } from './app.routes.service';
+import { UserService } from './services/user/user.service'
+import { QuoteService } from './services/quote/quote.service'
+
 
 
 
@@ -39,7 +42,10 @@ import { NavigationModule } from './main-layout/navigation/navigation.module';
     FormsModule, 
     ReactiveFormsModule
   ],
-  providers: [],
+    providers: [
+        UserService,
+        QuoteService
+    ],
   bootstrap: [AppComponent],
   schemas: [ NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA ]
 })

@@ -14,7 +14,7 @@ namespace NovaBot.Models.ViewModels
 
     public class BotVerificationModel{
         public string bot_user_id { get; set; }
-        public string stringbot_access_token { get; set; }
+        public string bot_access_token { get; set; }
     }
 
 }
