@@ -10,6 +10,7 @@ using NovaBot.Repositories;
 using NovaBot.Repositories.interfaces;
 using NovaBot.Data;
 using NovaBot.Models;
+using NovaBot.Helpers;
 
 namespace NovaBot
 {
@@ -36,9 +37,11 @@ namespace NovaBot
 
             services.AddDbContext<ApplicationDbContext>(opt =>
             opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString")));
-
+            services.AddScoped<SlackApiHelper>();
             services.AddScoped<IQuoteRepository, QuoteRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ISlackRepository, SlackRepository>();
+            services.AddHttpClient();
 
 
         }

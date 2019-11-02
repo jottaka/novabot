@@ -29,7 +29,6 @@ namespace NovaBot.Repositories
             }
             catch (System.Exception)
             {
-
                 throw;
             }
         }
@@ -73,7 +72,6 @@ namespace NovaBot.Repositories
             }
             catch (System.Exception)
             {
-
                 throw;
             }
         }
@@ -93,7 +91,6 @@ namespace NovaBot.Repositories
             }
             catch (System.Exception)
             {
-
                 throw;
             }
         }

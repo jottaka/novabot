@@ -11,7 +11,7 @@ using NovaBot.Repositories.interfaces;
 namespace NovaBot.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     public class SlackController : ControllerBase
     {
         private readonly ILogger<SlackController> _logger;
@@ -23,6 +23,23 @@ namespace NovaBot.Controllers
             _slackRepository = slackRepository;
             _logger = logger;
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUsers()
+        {
+            try
+            {
+                await _slackRepository.GetUserList();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Erro ao receber evento do slack: {e}");
+                return BadRequest();
+            }
+        }
+
+
 
         [HttpPost]
         public IActionResult SlackVerification([FromBody] SlackEventRequestModel request)
@@ -38,6 +55,21 @@ namespace NovaBot.Controllers
             }
         }
 
+        [HttpGet]
+        [Consumes("application/x-www-form-urlencoded")]
+        public async Task<IActionResult> SendMessage(string message, string channel)
+        {
+            try
+            {
+                await _slackRepository.SendMessage(message, channel) ;
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Não foi possivel adicionar quote: {e}");
+                return BadRequest();
+            }
+        }
 
     }
 }

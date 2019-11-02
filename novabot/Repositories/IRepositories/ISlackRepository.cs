@@ -11,6 +11,8 @@ namespace NovaBot.Repositories.interfaces
     {
         Task<string> AddQuoteAsync(string message);
         Task<string> ProcessRequest(SlackEventRequestModel request);
+        Task GetUserList();
+        Task SendMessage(string message, string channel);
     }
 
 }

@@ -26,6 +26,26 @@ export class QuoteService {
 
     listQuotes(request: ListQuoteRequestModel): Observable<QuoteFullModel[]> {
 
-        return this.http.post<QuoteFullModel[]>('qutes/list',request,this.options);
+        return this.http.post<QuoteFullModel[]>('quotes/list',request,this.options);
+    }
+
+    listQuotesByUser(request: ListQuoteRequestModel, userId:string): Observable<QuoteFullModel[]> {
+        var myOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+            params: {
+                'userId': userId
+            }
+        }
+        return this.http.post<QuoteFullModel[]>('quotes/ListByUser', request, this.options);
+    }
+
+    listQuotesBySnitch(request: ListQuoteRequestModel, snitchId: string): Observable<QuoteFullModel[]> {
+        var myOptions = {
+            headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+            params: {
+                'snitchId': snitchId
+            }
+        }
+        return this.http.post<QuoteFullModel[]>('quotes/ListBySnitch', request, this.options);
     }
 }

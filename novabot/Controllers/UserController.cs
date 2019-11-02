@@ -61,7 +61,22 @@ namespace NovaBot.Controllers
         {
             try
             {
-                var response = await _userRepository.GetUsersAsync();
+                List<UserViewModel> response = await _userRepository.GetUsersAsync();
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Não foi possivel listar de usuarios: {e}");
+                return BadRequest();
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUsers(string UserId)
+        {
+            try
+            {
+                UserViewModel response = await _userRepository.GetUserAsync(UserId);
                 return Ok(response);
             }
             catch (Exception e)
