@@ -1,11 +1,5 @@
 <div class="row">
-    <user-card class="col-md-4"></user-card>
-    <user-card class="col-md-4"></user-card>
-    <user-card class="col-md-4"></user-card>
-    <user-card class="col-md-4"></user-card>
-    <user-card class="col-md-4"></user-card>
-    <user-card class="col-md-4"></user-card>
-    <user-card class="col-md-4"></user-card>
-    <user-card class="col-md-4"></user-card>
-    <user-card class="col-md-4"></user-card>
+    <div *ngFor="let user of users">
+        <user-card [user]="user" class="col-md-4"></user-card>
+    </div>
 </div>

@@ -11,42 +11,42 @@ import { UserService } from './services/user/user.service'
 import { QuoteService } from './services/quote/quote.service'
 
 
-
-
-
-
 import { ViewsModule } from './views/views.module';
 import { SharedModule } from './shared/shared.module';
 import { ErrorModule } from './views/errors/error.module';
 
+import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 // main layout
 import { NavigationModule } from './main-layout/navigation/navigation.module';
 
 @NgModule({
-  declarations: [
+    declarations: [
         AppComponent
-  ],
-  imports: [
-    AgmCoreModule.forRoot({
-      apiKey: ''
-    }),
-    BrowserModule,
-    BrowserAnimationsModule,
-    NavigationModule,
-    AppRoutes,
-    RouterModule,
-    FormsModule,
-    SharedModule,
-    ViewsModule,
-    ErrorModule,
-    FormsModule, 
-    ReactiveFormsModule
-  ],
+    ],
+    imports: [
+        AgmCoreModule.forRoot({
+            apiKey: ''
+        }),
+        BrowserModule,
+        HttpModule,
+        BrowserAnimationsModule,
+        NavigationModule,
+        HttpClientModule,
+        AppRoutes,
+        RouterModule,
+        FormsModule,
+        SharedModule,
+        ViewsModule,
+        ErrorModule,
+        FormsModule,
+        ReactiveFormsModule,
+    ],
     providers: [
         UserService,
         QuoteService
     ],
-  bootstrap: [AppComponent],
-  schemas: [ NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA ]
+    bootstrap: [AppComponent],
+    schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }

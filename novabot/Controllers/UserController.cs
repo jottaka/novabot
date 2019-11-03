@@ -11,7 +11,7 @@ using NovaBot.Repositories.interfaces;
 namespace NovaBot.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> _logger;
@@ -62,21 +62,6 @@ namespace NovaBot.Controllers
             try
             {
                 List<UserViewModel> response = await _userRepository.GetUsersAsync();
-                return Ok(response);
-            }
-            catch (Exception e)
-            {
-                _logger.LogError($"Não foi possivel listar de usuarios: {e}");
-                return BadRequest();
-            }
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetUsers(string UserId)
-        {
-            try
-            {
-                UserViewModel response = await _userRepository.GetUserAsync(UserId);
                 return Ok(response);
             }
             catch (Exception e)

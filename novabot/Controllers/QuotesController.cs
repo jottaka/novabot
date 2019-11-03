@@ -43,6 +43,38 @@ namespace NovaBot.Controllers
         }
 
         [HttpPost]
+        [Consumes("application/x-www-form-urlencoded")]
+        public async Task<IActionResult> UpvoteQuote([FromForm] SlackEventRequestModel upvote)
+        {
+            try
+            {
+                await _quotesRepository.UpvoteAsync(upvote);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Não foi possivel adicionar voto para quote: {e}");
+                return BadRequest();
+            }
+        }
+
+        [HttpPost]
+        [Consumes("application/x-www-form-urlencoded")]
+        public async Task<IActionResult> Downvote([FromForm] SlackEventRequestModel upvote)
+        {
+            try
+            {
+                await _quotesRepository.DownvoteAsync(upvote);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Não foi possivel adicionar voto para quote: {e}");
+                return BadRequest();
+            }
+        }
+
+        [HttpPost]
         public async Task<IActionResult> List([FromBody] ListQuoteRequestModel request)
         {
             try
@@ -102,6 +134,7 @@ namespace NovaBot.Controllers
         //        return BadRequest();
         //    }
         //}
+
 
         [HttpPost]
         public async Task<IActionResult> UpdateQuote([FromBody] QuoteModel quote)

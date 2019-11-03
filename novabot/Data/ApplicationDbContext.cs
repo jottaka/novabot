@@ -7,8 +7,8 @@ namespace NovaBot.Data
     {
         public virtual DbSet<QuoteModel> Quote { get; set; }
         public virtual DbSet<UserModel> User { get; set; }
-        public virtual DbSet<ConfigurationModel> Configurations{ get; set; }
-
+        public virtual DbSet<ConfigurationModel> Configurations { get; set; }
+        public virtual DbSet<VoteModel> VoteModels { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
@@ -20,6 +20,7 @@ namespace NovaBot.Data
             configUserEntity(builder);
             configQuoteEntity(builder);
             configConfigurationEntity(builder);
+            configVoteModel(builder);
         }
 
         private static void configConfigurationEntity(ModelBuilder builder)
@@ -48,17 +49,33 @@ namespace NovaBot.Data
                                 entity.Property(q => q.Date).IsRequired();
                                 entity.Property(q => q.Upvotes);
                                 entity.Property(q => q.Downvotes);
-                                entity.Property(q => q.SnitchId).HasMaxLength(30);
-                                entity.HasOne(q => q.Snitch)
-                                .WithMany(u => u.Quotes)
-                                .HasForeignKey(u => u.SnitchId)
-                                .IsRequired(false);
+                                entity.Property(q => q.SnitchId);
+                                entity.Property(q => q.UserId);
                                 entity.HasOne(q => q.User)
                                 .WithMany(u => u.Quotes)
-                                .HasForeignKey(u => u.UserId)
+                                .HasForeignKey(q => q.UserId)
                                 .IsRequired(false);
                             }
                             );
+        }
+
+        private static void configVoteModel(ModelBuilder builder)
+        {
+            builder.Entity<VoteModel>(
+                entity =>
+                {
+                    entity.HasKey(v =>
+                       new { v.UserSlackId, v.QuoteVoteUid }
+                        );
+                    entity.Property(v => v.Vote);
+                    entity.HasOne(v => v.User)
+                    .WithMany(u => u.MyVotes)
+                    .HasForeignKey(v => v.UserSlackId);
+                    entity.HasOne(v => v.Quote)
+                    .WithMany(v => v.Votes)
+                    .HasForeignKey(v => v.QuoteId);
+                }
+                );
         }
 
         private static void configUserEntity(ModelBuilder builder)
@@ -66,6 +83,7 @@ namespace NovaBot.Data
             builder.Entity<UserModel>(entity =>
             {
                 entity.HasKey(u => u.UserId);
+                entity.Property(u => u.UserId).IsRequired();
                 entity.Property(u => u.Name).IsRequired().HasMaxLength(200);
                 entity.Property(u => u.RealName).HasMaxLength(200);
                 entity.Property(u => u.SlackId).IsRequired().HasMaxLength(50);
@@ -79,9 +97,6 @@ namespace NovaBot.Data
                 entity.Property(u => u.Ranking);
                 entity.HasMany(u => u.Quotes)
                 .WithOne(q => q.User)
-                .IsRequired(false);
-                entity.HasMany(u => u.Quotes)
-                .WithOne(q => q.Snitch)
                 .IsRequired(false);
                 ;
             });

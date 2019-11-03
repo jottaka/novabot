@@ -51,21 +51,39 @@ namespace NovaBotTest.Tests
 
         #region helpers
 
-        protected async Task<string> AddUser()
+        protected async Task<string> AddQuote(string userId,string snitchId)
         {
             using (var ctx = new ApplicationDbContext(options))
             {
-                var user = new UserModel()
-                {
-                    Name = "usuario",
-                    Ranking = 0
-                };
+                var quoteModel = GetFilledQuoteModel(userId, snitchId);
+                await ctx.Quote.AddAsync(quoteModel);
+                await ctx.SaveChangesAsync();
+                return quoteModel.QuoteId;
+            }
+        }
+
+        protected async Task<string> AddUser(bool isSnitch)
+        {
+            using (var ctx = new ApplicationDbContext(options))
+            {
+                UserModel user = addUser(isSnitch);
 
                 ctx.Add(user);
                 await ctx.SaveChangesAsync();
                 return user.UserId;
 
             }
+        }
+
+        private static UserModel addUser(bool isSnitch)
+        {
+            var name = isSnitch ? "SNITCH" : "USUARIO";
+            return new UserModel()
+            {
+                Name = name,
+                Ranking = 0,
+                SlackId = "SLACK",
+            };
         }
 
         protected UserViewModel GeFilledtUserViewModel()
@@ -77,7 +95,7 @@ namespace NovaBotTest.Tests
             };
         }
 
-        protected QuoteModel GetFilledQuoteModel(string userId)
+        protected QuoteModel GetFilledQuoteModel(string userId, string snitchId)
         {
             return new QuoteModel()
             {
@@ -85,7 +103,9 @@ namespace NovaBotTest.Tests
                 Date = DateTimeOffset.UtcNow,
                 Downvotes = 1,
                 Upvotes = 1,
-                UserId = userId
+                UserId = userId,
+                QuoteVoteUid = "1111",
+                SnitchId = snitchId,
             };
         }
 

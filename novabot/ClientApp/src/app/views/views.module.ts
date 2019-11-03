@@ -23,6 +23,10 @@ import { QuoteRowComponent } from './quote-row/quote-row.component';
 import { UserCardComponent } from './user-card/user-card.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { QuoteListComponent } from './quotes-list/quotes-list.component';
+import { MainPageComponent } from '../main-layout/main-page/main-page.component';
+import { UsersPageComponent } from '../main-layout/users-page/users-page.component';
+
 
 
 
@@ -55,7 +59,10 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
         Profile1Component,
         HelpComponent,
         UserProfileComponent,
-        QuoteRowComponent
+        QuoteRowComponent,
+        QuoteListComponent,
+        MainPageComponent,
+        UsersPageComponent
         
     ],
     exports: [

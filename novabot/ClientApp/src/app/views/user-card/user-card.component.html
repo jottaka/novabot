@@ -3,7 +3,7 @@
         <mdb-card cascade="true" narrow="true" >
             <!--Card image-->
             <div class="view view-cascade overlay waves-light zoom" mdbWavesEffect>
-                <mdb-card-img src="https://mdbootstrap.com/img/Photos/Lightbox/Thumbnail/img%20(147).jpg"></mdb-card-img>
+                <mdb-card-img [src]="user.profilePicture"></mdb-card-img>
                 <a>
                     <div class="mask rgba-white-slight"></div>
                 </a>
@@ -12,22 +12,15 @@
             <mdb-card-body cascade="true" class="text-center pb-0 px-0">
                 <!--Card content-->
                 <h5 class="pink-text">
-                    <mdb-icon fas icon="user-astronaut"></mdb-icon> Usuar4io
+                    <mdb-icon fas icon="user-astronaut"></mdb-icon> {{user.name}}
                 </h5>
                 <!--Title-->
-                <h4 class="card-title">@usuarios</h4>
+                <h4 class="card-title">@{{user.name}}</h4>
                 <!--Text-->
-
-                <mdb-card-text>
-                    Sed ut perspiciatis unde omnis iste natus sit voluptatem accusantium doloremque laudantium, totam rem
-                    aperiam.
-                </mdb-card-text>
-
-                <a mdbBtn color="unique" class="waves-light" mdbWavesEffect>Button</a>
 
                 <!-- Card footer -->
                 <div class="card-footer text-muted text-center mt-4">
-                    1000 quotes
+                    {{user.numberOfQuotes}} quotes
                 </div>
 
             </mdb-card-body>

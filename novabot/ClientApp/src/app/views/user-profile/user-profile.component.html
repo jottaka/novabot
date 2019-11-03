@@ -9,7 +9,7 @@
 
             <!-- Featured image -->
             <div class="view overlay waves-light" mdbWavesEffect>
-                <img src="https://mdbootstrap.com/img/Photos/Others/laptop-sm.jpg" class="img-fluid" alt="Sample image for first version of blog listing">
+                <img [src]="{user.profilePicture}" class="img-fluid" alt="Isso não é o tinder.">
                 <a>
                     <div class="mask rgba-blue-slight"></div>
                 </a>
@@ -22,35 +22,34 @@
 
             <!-- Excerpt -->
             <a href="#!" class="green-text">
-                <h1><mdb-icon fas icon="user-astronaut" class="pr-1"></mdb-icon> @Work</h1>
+                <h1><mdb-icon fas icon="user-astronaut" class="pr-1"></mdb-icon> @{{Name}}</h1>
             </a>
             <br />
             <br />
 
             <div class="row col-md-4">
                 <div><p><mdb-icon fas icon="medal" size="2x" class="yellow-text pr-3" aria-hidden="true"></mdb-icon> </p></div>
-                <div class="align-middle text-info">red-text</div>
+                <div class="align-middle text-info">0</div>
+            </div>
+            <div class="row col-md-4">
+                <div><p><mdb-icon fas icon="quote-left" size="2x" class="grey-text pr-3" aria-hidden="true"></mdb-icon> </p></div>
+                <div class="align-middle text-info">{{user.numberOfQuotes}}</div>
             </div>
             <div class="row col-md-4">
                 <div><p><mdb-icon fas icon="thumbs-up" size="2x" class="green-text pr-3" aria-hidden="true"></mdb-icon> </p></div>
-                <div class="align-middle text-info">red-text</div>
+                <div class="align-middle text-info">{{user.upVotes}}</div>
             </div>
             <div class="row col-md-4">
                 <div><p><mdb-icon fas icon="thumbs-down" size="2x" class="red-text pr-3" aria-hidden="true"></mdb-icon> </p></div>
-                <div class="align-middle text-info">red-text</div>
+                <div class="align-middle text-info">{{user.downVotes}}</div>
             </div>
             <div class="row col-md-4">
                 <div><p><mdb-icon fas icon="skull-crossbones" size="2x" class="grey-text pr-3" aria-hidden="true"></mdb-icon> </p></div>
-                <div class="align-middle text-info">red-text</div>
+                <div class="align-middle text-info">{{user.snitchScore}}</div>
             </div>
         </div>
     </div>
 </div>
-<quote-row></quote-row>
-<quote-row></quote-row>
-<quote-row></quote-row>
-<quote-row></quote-row>
-<quote-row></quote-row>
-<quote-row></quote-row>
+<quote-list></quote-list>
 
 <!-- News jumbotron -->

@@ -1,3 +1,4 @@
+import { QuoteFullModel } from '../../models/quote/quotefullmodel';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
@@ -7,14 +8,13 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class QuoteRowComponent implements OnInit {
 
-    @Input() author: string = '';
-    @Input() quote = '';
-    @Input() thumbnail_url = '';
-    @Input() snitch = '';
+    @Input() quote: QuoteFullModel = <QuoteFullModel>{} ;
 
     constructor() { }
 
     ngOnInit() {
+        console.log("Row");
+        console.log(this.quote);
     }
 
 }

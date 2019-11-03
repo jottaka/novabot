@@ -1,20 +1,20 @@
 <mdb-card>
-    <mdb-card-header>12/10/2019, <b>Dedurado por:</b> Source Title</mdb-card-header>
+    <mdb-card-header>{{quote.date | date: 'dd/MM/yyyy'}}, <b>Dedurado por:</b> {{quote.userName}}</mdb-card-header>
     <mdb-card-body class="padding-quote">
         <div class="container col-md-12">
             <div class="row h-100">
                 <div class="col-lg-1 align-middle">
                     <div class="zoom  pl-md-1 pt-md-2 pb-md-2">
-                        <img src="https://mdbootstrap.com/img/Photos/Avatars/img(31).jpg" class="align-middle img-fluid rounded-circle avatar mx-auto"
+                        <img [src]="quote.userPicture" class="align-middle img-fluid rounded-circle avatar mx-auto"
                              alt="zoom">
                     </div>
                 </div>
                 <div class="col-md-7 pt-md-2 pb-md-2" class>
                     <blockquote class="blockquote">
                         <font size="6">
-                            <p class="mb-0">Lorem ipsum dolor sit amet, consectetur asdfasdffdsasadsaasdfsa asdfasfdfsad adipiscing elit. Integer posuere erat a ante.</p>
+                            <p class="mb-0">{{quote.content}}</p>
                         </font>
-                            <footer class="blockquote-footer mb-3">{{author}} <cite title="Source Title">, <b>Canal de origem:</b> Source Title</cite></footer>
+                        <footer class="blockquote-footer mb-3">{{quote.userName}} <cite title="Source Title">, <b>Canal de origem:</b> Source Title</cite></footer>
                     </blockquote>
                 </div>
                 <div class="col-md-1 pt-md-4">
@@ -28,7 +28,7 @@
                             </div>
                             <div class="w-100"></div>
                             <div class="col text-success text-center align-bottom">
-                                <b> 0 </b>
+                                <b> {{quote.downvotes}} </b>
                             </div>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                             </div>
                             <div class="w-100"></div>
                             <div class="col text-danger text-center">
-                                <b> 0 </b>
+                                <b> {{quote.upvotes}} </b>
                             </div>
                         </div>
                     </div>

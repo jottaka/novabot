@@ -17,15 +17,15 @@
 
 //namespace NovaBotTest.Tests
 //{
-//    public class SlackRepositoryTest:BaseTest 
+//    public class SlackRepositoryTest : BaseTest
 //    {
-        
+
 //        public SlackRepositoryTest(TestFixture<Startup> fixture) : base(fixture)
 //        {
 //        }
 
 //        [Theory]
-//        [InlineData("/quote 'Minha Frase' @franco", "MinhaFrase","franco")]
+//        [InlineData("/quote 'Minha Frase' @franco", "MinhaFrase", "franco")]
 //        [InlineData("/quote 'Minha Frase'", "Minha Frase", "anônimo")]
 //        public async Task AddQuoteSlackEventTest(string input, string expectedQuote, string expectedUser)
 //        {
@@ -35,8 +35,8 @@
 //                await repository.AddQuoteAsync(input);
 
 
-//                var quoteDb = ctx.Quote.Include(q=> q.User).FirstOrDefault();
-               
+//                var quoteDb = ctx.Quote.Include(q => q.User).FirstOrDefault();
+
 
 //                Assert.NotNull(quoteDb);
 //                Assert.Equal(expectedQuote, quoteDb.Content);
