@@ -87,6 +87,15 @@ namespace NovaBot.Repositories
                     return;
                 }
                 var usersList = users.ConvertAll(u => new UserModel(u));
+                var usersNameList = usersList.ConvertAll(u => u.Name);
+                var alreadyRegisteredUsers =
+                    _context.User.Where( 
+                        u=> usersNameList.Contains(u.Name))
+                        .ToList().ConvertAll(u=>u.Name);
+
+                usersList = usersList.Where(u => !alreadyRegisteredUsers
+                .Contains(u.Name)).ToList();
+
                 await _context.AddRangeAsync(usersList);
                 await _context.SaveChangesAsync();
             }

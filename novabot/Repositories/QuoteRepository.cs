@@ -15,6 +15,8 @@ namespace NovaBot.Repositories
     public class QuoteRepository : IQuoteRepository
     {
         private readonly ApplicationDbContext _context;
+        private static Random random = new Random();
+
         public QuoteRepository(
             ApplicationDbContext context
             )
@@ -26,7 +28,7 @@ namespace NovaBot.Repositories
         {
             try
             {
-                await processEvent(quoteEvent);
+                await processNewQuoteEvent(quoteEvent);
             }
             catch (global::System.Exception)
             {
@@ -80,11 +82,11 @@ namespace NovaBot.Repositories
             }
         }
 
-        public async Task<ListQuoteResponseModel> GetListByUserAsync(ListQuoteRequestModel request,string userId)
+        public async Task<ListQuoteResponseModel> GetListByUserAsync(ListQuoteRequestModel request, string userId)
         {
             try
             {
-                ListQuoteResponseModel response = await getListResponseByUser(request,userId);
+                ListQuoteResponseModel response = await getListResponseByUser(request, userId);
 
                 return response;
             }
@@ -123,6 +125,42 @@ namespace NovaBot.Repositories
             }
         }
 
+        public async Task UpvoteAsync(SlackEventRequestModel request)
+        {
+            try
+            {
+                var quote = await validadeVoteRequest(request);
+                //To Do
+                //Verify if user exists, if not request its information
+                short voteValue = 1;
+                await saveVote(request, voteValue, quote);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task DownvoteAsync(SlackEventRequestModel request)
+        {
+            try
+            {
+                var quote = await validadeVoteRequest(request);
+                //To Do
+                //Verify if user exists, if not request its information
+                short voteValue = -1;
+                await saveVote(request, voteValue,quote);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
         #region NotImplemented
 
         private async Task processEvent(SlackEventRequestModel quoteEvent)
@@ -141,18 +179,21 @@ namespace NovaBot.Repositories
             throw new System.NotImplementedException();
         }
 
-        public Task UpvoteAsync(string quoteId)
-        {
-            throw new System.NotImplementedException();
-        }
 
         public Task<int> CountQuotesAsync()
         {
             throw new System.NotImplementedException();
-        } 
+        }
         #endregion
 
         #region PRIVATE
+
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
 
         private async Task<string> getAuthorId(string author)
         {
@@ -188,13 +229,13 @@ namespace NovaBot.Repositories
             return response;
         }
 
-        private async Task<ListQuoteResponseModel> getListResponseByUser(ListQuoteRequestModel request,string userId)
+        private async Task<ListQuoteResponseModel> getListResponseByUser(ListQuoteRequestModel request, string userId)
         {
             IQueryable<QuoteModel> orderedQuery = null;
             var quotesCount = await countQuotesByUser(userId);
             var numberOfPages = quotesCount / request.N;
 
-            orderedQuery = generateListQueriableByUser(request, orderedQuery,userId);
+            orderedQuery = generateListQueriableByUser(request, orderedQuery, userId);
 
             ListQuoteResponseModel response = await getListResponse(request, orderedQuery, quotesCount, numberOfPages);
             return response;
@@ -245,7 +286,7 @@ namespace NovaBot.Repositories
         private IQueryable<QuoteModel> generateListQueriableByUser(ListQuoteRequestModel request, IQueryable<QuoteModel> orderedQuery, string userId)
         {
             var queryUnordered = _context.Quote.Include(q => q.User).Include(q => q.Snitch)
-                            .AsNoTracking().Where(u=>u.UserId == userId);
+                            .AsNoTracking().Where(u => u.UserId == userId);
 
             orderedQuery = orderQuotes(request, orderedQuery, queryUnordered);
 
@@ -290,12 +331,12 @@ namespace NovaBot.Repositories
 
         private async Task<int> countQuotesByUser(string userId)
         {
-            return await _context.Quote.AsNoTracking().CountAsync(q => q.UserId==userId);
+            return await _context.Quote.AsNoTracking().CountAsync(q => q.UserId == userId);
         }
 
         private async Task<int> countQuotesbySnitch(string snitchId)
         {
-            return await _context.Quote.AsNoTracking().CountAsync(q => q.SnitchId == snitchId) ;
+            return await _context.Quote.AsNoTracking().CountAsync(q => q.SnitchId == snitchId);
         }
 
 
@@ -316,21 +357,110 @@ namespace NovaBot.Repositories
             await _context.SaveChangesAsync();
         }
 
-        private async Task sendAnswer(string answer)
-        {
 
+        private async Task saveVote(SlackEventRequestModel request, short voteValue,QuoteModel quote)
+        {
+            var vote = new VoteModel()
+            {
+                QuoteVoteUid = request.text,
+                UserSlackId = request.user_id,
+                Vote = voteValue,
+                QuoteId = quote.QuoteId
+            };
+
+            await _context.AddAsync(vote);
+            await _context.SaveChangesAsync();
         }
 
-        private static string getAuthors(string author)
+        private async Task<QuoteModel> validadeVoteRequest(SlackEventRequestModel request)
         {
-            if (author[0] == '@')
+            if (request.text.Split(' ').Count() > 1)
             {
-                return author.Remove('@');
+                throw new Exception($"Requeste invalido: {request.text}");
             }
-            else
+
+            var quote = await _context.Quote.
+                FirstOrDefaultAsync(v => v.QuoteVoteUid == request.text);
+            if (quote is null)
             {
-                return null;
+                throw new Exception($"Quote não existe id:{request.text}");
             }
+            if (await _context.VoteModels.AnyAsync(v => v.QuoteVoteUid == request.text
+            || v.UserSlackId == request.user_id))
+            {
+                throw new Exception(
+                    $"Usuario ja votou para essa quote Uid:{request.user_id} {request.text}");
+            }
+            return quote;
+        }
+
+
+        private async Task processNewQuoteEvent(SlackEventRequestModel quoteEvent)
+        {
+            string authorName = null;
+            string authorId = null;
+            var content = quoteEvent.text;
+            if (string.IsNullOrWhiteSpace(quoteEvent.text))
+            {
+                throw new Exception("Quote vazio");
+            }
+            var byPosition = quoteEvent.text.LastIndexOf("by:");
+            if (byPosition > 0)
+            {
+                var authorString = quoteEvent.text.Split("by:");
+                if (string.IsNullOrWhiteSpace(authorString[0]))
+                {
+                    throw new Exception("Quote vazio");
+                }
+
+                content = authorString[0];
+
+                if (authorString.Count() > 2)
+                {
+                    authorName = null;
+                }
+                else
+                {
+
+                    authorName = authorString[1].Replace("@", "").Replace(" ", ""); ;
+
+                    var author = await _context.User.FirstOrDefaultAsync(
+                        u => u.Name == authorName || u.RealName == authorName
+                        );
+                    if (author != null)
+                    {
+                        authorId = author.UserId;
+                    }
+                }
+            }
+            await saveQuoteInDb(quoteEvent, authorId, content);
+        }
+
+        private async Task saveQuoteInDb(SlackEventRequestModel quoteEvent, string authorId, string content)
+        {
+            string quoteVoteUid = await getUniqueQuoteVoteId();
+
+            var quote = new QuoteModel()
+            {
+                Content = content,
+                SnitchId = quoteEvent.user_id,
+                UserId = authorId,
+                Date = DateTimeOffset.Now,
+                QuoteVoteUid = quoteVoteUid
+            };
+            await _context.AddAsync(quote);
+            await _context.SaveChangesAsync();
+        }
+
+        private async Task<string> getUniqueQuoteVoteId()
+        {
+            string quoteVoteUid;
+            do
+            {
+                quoteVoteUid = RandomString(8);
+
+            } while (await _context.Quote.AnyAsync(q => q.QuoteVoteUid == quoteVoteUid));
+            return quoteVoteUid;
         }
 
         #endregion

@@ -1,6 +1,9 @@
-﻿using NovaBot.Models.ViewModels;
+﻿using Microsoft.EntityFrameworkCore;
+using NovaBot.Data;
+using NovaBot.Models.ViewModels;
 using System.Collections.Generic;
-
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace NovaBot.Models
 {
@@ -19,9 +22,9 @@ namespace NovaBot.Models
         public string ProfilePicutre_512 { get; set; }
         public string PasswordHash { get; set; }
         public string Salt { get; set; }
-
-
         public List<QuoteModel> Quotes { get; set; }
+        public List<VoteModel> MyVotes { get; set; }
+
 
         public UserModel() { }
         public UserModel(UserViewModel user) {
@@ -40,13 +43,29 @@ namespace NovaBot.Models
             ProfilePicutre_72 = model.profile.image_72;
         }
 
-        public UserViewModel ToViewModel()
+        public async Task<UserViewModel> ToViewModel(ApplicationDbContext ctx)
         {
+            var numberQuotes = await ctx.Quote.CountAsync(c => c.UserId == UserId);
+            var numberOfDownVotes = await ctx.VoteModels.CountAsync(
+                c=> c.UserSlackId == SlackId && c.Vote==-1
+                );
+            var numberOfUpvotes = await ctx.VoteModels.CountAsync(
+                c => c.UserSlackId == SlackId && c.Vote == 1
+                );
+            var snitchScore = await ctx.Quote.CountAsync(
+                q=> q.SnitchId==UserId
+                );
+
             return new UserViewModel()
             {
                 Name = this.Name,
                 Ranking = this.Ranking,
-                UserId = this.UserId
+                UserId = this.UserId,
+                ProfilePicture = this.ProfilePicture_192,
+                UpVotes = (uint)numberOfUpvotes,
+                DownVotes=(uint)numberOfDownVotes,
+                NumberOfQuotes = (uint)numberQuotes,
+                SnitchScore = (uint)snitchScore,
             };
         }
 

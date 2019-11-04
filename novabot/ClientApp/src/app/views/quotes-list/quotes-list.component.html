@@ -1,3 +1,55 @@
- <div *ngFor ="let quote of quotesList.quotes">
-     <quote-row [quote]="quote"></quote-row>
- </div>
+<div *ngIf="quotesList.quotes.length>0">
+    <center>
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button mdbBtn type="button" color="primary" class="waves-light" mdbWavesEffect>Data</button>
+            <button mdbBtn type="button" color="primary" class="waves-light" mdbWavesEffect>Upvotes</button>
+            <button mdbBtn type="button" color="primary" class="waves-light" mdbWavesEffect>Downvotes</button>
+            <button mdbBtn type="button" color="primary" class="waves-light" mdbWavesEffect>Dedoduro</button>
+        </div>
+    </center>
+    <div *ngFor="let quote of quotesList.quotes">
+        <quote-row [quote]="quote"></quote-row>
+    </div>
+    <br />
+    <center>
+        <nav aria-label="Page navigation example" class="col-md-offset-4 col-md-4">
+            <ul class="pagination pagination-circle pg-blue">
+                <li class="page-item disabled"><a class="page-link" mdbWavesEffect>First</a></li>
+                <li class="page-item disabled">
+                    <a class="page-link" aria-label="Previous" mdbWavesEffect>
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li class="page-item active"><a class="page-link" mdbWavesEffect>1</a></li>
+                <li class="page-item"><a class="page-link" mdbWavesEffect>2</a></li>
+                <li class="page-item"><a class="page-link" mdbWavesEffect>3</a></li>
+                <li class="page-item"><a class="page-link" mdbWavesEffect>4</a></li>
+                <li class="page-item"><a class="page-link" mdbWavesEffect>5</a></li>
+                <li class="page-item">
+                    <a class="page-link" aria-label="Next" mdbWavesEffect>
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" mdbWavesEffect>Last</a></li>
+            </ul>
+        </nav>
+    </center>
+</div>
+<div *ngIf="quotesList.quotes.length==0">
+    <mdb-card>
+        <mdb-card-header>Featured</mdb-card-header>
+        <mdb-card-body>
+            <mdb-card-title>
+                <h5>O usuário não possui quotes</h5>
+            </mdb-card-title>
+            <mdb-card-text>
+                Ajude este usuário a passar vergonha, dedurando suas frases mais peculiares com o NovaBot.
+            </mdb-card-text>
+        </mdb-card-body>
+    </mdb-card>
+
+</div>
+
+

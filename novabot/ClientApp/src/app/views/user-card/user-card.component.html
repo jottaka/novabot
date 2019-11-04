@@ -2,9 +2,9 @@
     <div class="pt-md-2 pb-md-4 pl-md-4 pr-md-4 mr-xl-n5 float-left h-25">
         <mdb-card cascade="true" narrow="true" >
             <!--Card image-->
-            <div class="view view-cascade overlay waves-light zoom" mdbWavesEffect>
-                <mdb-card-img [src]="user.profilePicture"></mdb-card-img>
-                <a>
+            <div class="view view-cascade overlay waves-light zoom" mdbWavesEffect >
+                <mdb-card-img [src]="user.profilePicture"> </mdb-card-img>
+                <a [routerLink]="['../user/'+user.userId]">
                     <div class="mask rgba-white-slight"></div>
                 </a>
             </div>

@@ -71,6 +71,22 @@ namespace NovaBot.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetUser(string userId)
+        {
+            try
+            {
+                UserViewModel response = await _userRepository.GetUserAsync(userId);
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Não foi possivel listar de usuarios: {e}");
+                return BadRequest();
+            }
+        }
+
+
 
         [HttpGet]
         public async Task<IActionResult> DeleteQuote([FromBody] string userId)

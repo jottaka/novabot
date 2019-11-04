@@ -1,11 +1,11 @@
 <mdb-card>
-    <mdb-card-header>{{quote.date | date: 'dd/MM/yyyy'}}, <b>Dedurado por:</b> {{quote.userName}}</mdb-card-header>
+    <mdb-card-header>{{quote.date | date: 'dd/MM/yyyy'}}, <b>Dedurado por:</b> <a [routerLink]="['../user/'+quote.snitchId]">{{quote.snitchName}}</a></mdb-card-header>
     <mdb-card-body class="padding-quote">
         <div class="container col-md-12">
             <div class="row h-100">
                 <div class="col-lg-1 align-middle">
                     <div class="zoom  pl-md-1 pt-md-2 pb-md-2">
-                        <img [src]="quote.userPicture" class="align-middle img-fluid rounded-circle avatar mx-auto"
+                        <img [src]="quote.userPicture" style="cursor : pointer;" [routerLink]="['../user/'+quote.userId]" class="align-middle img-fluid rounded-circle avatar mx-auto"
                              alt="zoom">
                     </div>
                 </div>

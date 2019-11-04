@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
-    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>3.4</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
     <SpaRoot>ClientApp\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
@@ -19,6 +19,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="3.6.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
 
@@ -30,7 +34,34 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\main-layout\main-page\main-page.component.ts" />
+    <None Remove="ClientApp\src\app\main-layout\users-page\users-page.component.spec.ts" />
+    <None Remove="ClientApp\src\app\main-layout\users-page\users-page.component.ts" />
+    <None Remove="ClientApp\src\app\models\quote\ListQuoteRequestModel.ts" />
+    <None Remove="ClientApp\src\app\models\quote\ListQuoteResponseModel.ts" />
+    <None Remove="ClientApp\src\app\models\quote\QuoteFullModel.ts" />
+    <None Remove="ClientApp\src\app\models\UserModel.ts" />
+    <None Remove="ClientApp\src\app\services\quote\quote.service.ts" />
+    <None Remove="ClientApp\src\app\services\user\user.service.ts" />
+    <None Remove="ClientApp\src\app\views\quotes-list\quotes-list.component.ts" />
+    <None Remove="ClientApp\src\app\views\quote-row\quote-row.component.ts" />
+    <None Remove="ClientApp\src\app\views\user-card\user-card.component.ts" />
+    <None Remove="ClientApp\src\app\views\user-list\user-list.component.ts" />
+    <None Remove="ClientApp\src\app\views\user-profile\user-profile.component.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\src\app\services\NewFolder - Copy\" />
     <Folder Include="Data\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ClientApp\src\app\models\quote\ListQuoteResponseModel.js.map">
+      <DependentUpon>ListQuoteResponseModel.js</DependentUpon>
+    </None>
+    <None Update="ClientApp\src\app\models\quote\ListQuoteRequestModel.js.map">
+      <DependentUpon>ListQuoteRequestModel.js</DependentUpon>
+    </None>
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
@@ -59,5 +90,21 @@
       </ResolvedFileToPublish>
     </ItemGroup>
   </Target>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
+    <TypeScriptModuleKind />
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
 
 </Project>

@@ -1,12 +1,13 @@
 
 export class QuoteFullModel {
-    UserId: string;
-    UserName: string;
-    UserPicture: string;
-    SnitchId: string;
-    Content: string;
-    QuoteId: string;
-    Date: Date;
-    Upvotes: number;
-    Downvotes: number;
+    userId: string;
+    userName: string;
+    userPicture: string;
+    snitchId: string;
+    snitchName: string;
+    content: string;
+    quoteId: string;
+    date: Date;
+    upvotes: number;
+    downvotes: number;
 }

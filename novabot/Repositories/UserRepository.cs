@@ -55,7 +55,7 @@ namespace NovaBot.Repositories
             {
                 var user = await _context.User.AsNoTracking()
                     .FirstOrDefaultAsync(u=>u.UserId==userId);
-                return user.ToViewModel();
+                return await user.ToViewModel(_context);
             }
             catch (System.Exception)
             {
@@ -67,8 +67,10 @@ namespace NovaBot.Repositories
         {
             try
             {
-                var users = await _context.User.AsNoTracking().ToListAsync(); ;
-                return users.ConvertAll(u => u.ToViewModel()); 
+                var users = await _context.User.AsNoTracking()
+                    .ToListAsync(); ;
+                return users.ConvertAll(u => 
+                u.ToViewModel(_context).GetAwaiter().GetResult()) ; 
             }
             catch (System.Exception)
             {

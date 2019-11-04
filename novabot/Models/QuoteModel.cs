@@ -1,5 +1,6 @@
 ﻿using NovaBot.Models.ViewModels;
 using System;
+using System.Collections.Generic;
 
 namespace NovaBot.Models
 {
@@ -14,10 +15,10 @@ namespace NovaBot.Models
         public DateTimeOffset Date { get; set; }
         public uint Upvotes { get; set; }
         public uint Downvotes { get; set; }
+        public string QuoteVoteUid { get; set; }
         public UserModel User { get; set; }
         public UserModel Snitch { get; set; }
-
-
+        public List<VoteModel> Votes { get; set; }
 
         public QuoteFullViewModel ToFullViewMode()
         {

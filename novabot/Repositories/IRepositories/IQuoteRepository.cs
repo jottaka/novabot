@@ -17,8 +17,8 @@ namespace NovaBot.Repositories.interfaces
         Task<ListQuoteResponseModel> GetListAsync(ListQuoteRequestModel request);
         Task<ListQuoteResponseModel> GetListByUserAsync(ListQuoteRequestModel request,string userId);
         Task<ListQuoteResponseModel> GetListBySnitchAsync(ListQuoteRequestModel request,string snitchId);
-        Task UpvoteAsync(string quoteId);
-        Task DownvoteAsync(string quoteId);
+        Task UpvoteAsync(SlackEventRequestModel request);
+        Task DownvoteAsync(SlackEventRequestModel request);
         Task ReceiveNewQuoteEvent(SlackEventRequestModel quoteEvent);
     }
 
