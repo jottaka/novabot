@@ -20,7 +20,7 @@ export class QuoteService {
 
     listQuotes(request: ListQuoteRequestModel): Observable<ListQuoteResponseModel> {
 
-        return this.http.post<ListQuoteResponseModel>('quotes/list',request,this.options);
+        return this.http.post<ListQuoteResponseModel>('api/quotes/list',request,this.options);
     }
 
     listQuotesByUser(request: ListQuoteRequestModel, userId: string): Observable<ListQuoteResponseModel> {
@@ -30,7 +30,7 @@ export class QuoteService {
                 'userId': userId
             }
         }
-        return this.http.post<ListQuoteResponseModel>('quotes/ListByUser', request, myOptions);
+        return this.http.post<ListQuoteResponseModel>('api/quotes/ListByUser', request, myOptions);
     }
 
     listQuotesBySnitch(request: ListQuoteRequestModel, snitchId: string): Observable<ListQuoteResponseModel> {
@@ -40,6 +40,6 @@ export class QuoteService {
                 'snitchId': snitchId
             }
         }
-        return this.http.post<ListQuoteResponseModel>('quotes/ListBySnitch', request, myOptions);
+        return this.http.post<ListQuoteResponseModel>('api/quotes/ListBySnitch', request, myOptions);
     }
 }

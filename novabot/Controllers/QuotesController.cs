@@ -11,7 +11,7 @@ using NovaBot.Repositories.interfaces;
 namespace NovaBot.Controllers
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     public class QuotesController : ControllerBase
     {
         private readonly ILogger<QuotesController> _logger;

@@ -14,7 +14,7 @@ export class UserService {
     }
 
     getUsers(): Observable<UserModel[]> {
-        return this.http.get<UserModel[]>('user/getusers', this.options);
+        return this.http.get<UserModel[]>('api/user/getusers', this.options);
     }
 
     getUser(userId: string): Observable<UserModel> {
@@ -24,6 +24,6 @@ export class UserService {
                 'userId': userId
             }
         }
-        return this.http.get<UserModel>('user/getuser',myOptions);
+        return this.http.get<UserModel>('api/user/getuser',myOptions);
     }
 }

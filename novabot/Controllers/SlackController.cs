@@ -11,7 +11,7 @@ using NovaBot.Repositories.interfaces;
 namespace NovaBot.Controllers
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     public class SlackController : ControllerBase
     {
         private readonly ILogger<SlackController> _logger;
