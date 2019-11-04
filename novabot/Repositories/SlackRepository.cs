@@ -30,7 +30,7 @@ namespace NovaBot.Repositories
             try
             {
                 var message = $"Nova quote: '{quote.text}'; User para votar o id: {quoteVoteUid}!";
-                MessageToChannelMode messageModel = prepareMessageToChannelModel(message, quote.channel);
+                MessageToChannelMode messageModel = prepareMessageToChannelModel(message, quote.channel_id);
                 await _slackApiHelper.SendMessageToChannel(messageModel);
             }
             catch (System.Exception)

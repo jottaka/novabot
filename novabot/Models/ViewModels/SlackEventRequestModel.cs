@@ -11,7 +11,7 @@ namespace NovaBot.Models.ViewModels
         public string type { get; set; }
         public string user { get; set; }
         public string  text { get; set; }
-        public string channel { get; set; }
+        public string channel_id { get; set; }
         public string user_id { get; set; }
 
     }

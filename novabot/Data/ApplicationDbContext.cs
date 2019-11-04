@@ -68,9 +68,6 @@ namespace NovaBot.Data
                        new { v.UserSlackId, v.QuoteVoteUid }
                         );
                     entity.Property(v => v.Vote);
-                    entity.HasOne(v => v.User)
-                    .WithMany(u => u.MyVotes)
-                    .HasForeignKey(v => v.UserSlackId);
                     entity.HasOne(v => v.Quote)
                     .WithMany(v => v.Votes)
                     .HasForeignKey(v => v.QuoteId);

@@ -372,7 +372,14 @@ namespace NovaBot.Repositories
                 Vote = voteValue,
                 QuoteId = quote.QuoteId
             };
-
+            if (vote.Vote > 0)
+            {
+                quote.Upvotes++;
+            }
+            else
+            {
+                quote.Downvotes++;
+            }
             await _context.AddAsync(vote);
             await _context.SaveChangesAsync();
         }
@@ -391,7 +398,7 @@ namespace NovaBot.Repositories
                 throw new Exception($"Quote não existe id:{request.text}");
             }
             if (await _context.VoteModels.AnyAsync(v => v.QuoteVoteUid == request.text
-            || v.UserSlackId == request.user_id))
+            && v.UserSlackId == request.user_id))
             {
                 throw new Exception(
                     $"Usuario ja votou para essa quote Uid:{request.user_id} {request.text}");
@@ -444,11 +451,12 @@ namespace NovaBot.Repositories
         private async Task<string> saveQuoteInDb(SlackEventRequestModel quoteEvent, string authorId, string content)
         {
             string quoteVoteUid = await getUniqueQuoteVoteId();
-
+            
+            var snitchId = _context.User.FirstOrDefault(u=>u.SlackId==quoteEvent.user_id).UserId;
             var quote = new QuoteModel()
             {
                 Content = content,
-                SnitchId = quoteEvent.user_id,
+                SnitchId = snitchId,
                 UserId = authorId,
                 Date = DateTimeOffset.Now,
                 QuoteVoteUid = quoteVoteUid

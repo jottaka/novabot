@@ -9,16 +9,6 @@ import { AgmCoreModule } from '@agm/core';
 import { CalendarModule, } from 'angular-calendar';
 import { SharedModule } from '../shared/shared.module';
 
-import { FooterComponent } from '../main-layout/footer/footer.component';
-import { BasicTableComponent } from './tables/basic-table/basic-table.component';
-import { ModalsComponent } from './modals/modals.component';
-import { Map1Component } from './maps/map1/map1.component';
-import { StatsCardComponent } from './dashboards/common/stats-card/stats-card.component';
-import { StatsCard2Component } from './dashboards/common/stats-card2/stats-card2.component';
-import { Dashboard1Component } from './dashboards/dashboard1/dashboard1.component';
-import { Profile1Component } from './profile/profile1/profile1.component';
-import { HelpComponent } from './help/help.component';
-
 import { QuoteRowComponent } from './quote-row/quote-row.component';
 import { UserCardComponent } from './user-card/user-card.component';
 import { UserListComponent } from './user-list/user-list.component';
@@ -49,15 +39,6 @@ import { UsersPageComponent } from '../main-layout/users-page/users-page.compone
     declarations: [
         UserListComponent,
         UserCardComponent,
-        FooterComponent,
-        BasicTableComponent,
-        ModalsComponent,
-        Map1Component,
-        StatsCardComponent,
-        StatsCard2Component,
-        Dashboard1Component,
-        Profile1Component,
-        HelpComponent,
         UserProfileComponent,
         QuoteRowComponent,
         QuoteListComponent,
@@ -66,13 +47,6 @@ import { UsersPageComponent } from '../main-layout/users-page/users-page.compone
         
     ],
     exports: [
-        FooterComponent,
-        BasicTableComponent,
-        ModalsComponent,
-        Map1Component,
-        StatsCardComponent,
-        StatsCard2Component,
-        Dashboard1Component,
         QuoteRowComponent,
         UserListComponent,
         UserProfileComponent
