@@ -10,10 +10,9 @@ import { ListQuoteResponseModel } from '../../models/quote/listquoteresponsemode
 })
 export class QuoteListComponent implements OnInit {
 
-    @Input() quotesList: ListQuoteResponseModel = <ListQuoteResponseModel>{ quotes:[]}  ;
+    @Input() quotesList: ListQuoteResponseModel = <ListQuoteResponseModel>{}  ;
 
     constructor() {
-        this.quotesList = <ListQuoteResponseModel>{ quotes: [] };
     }
 
     ngOnInit() {
