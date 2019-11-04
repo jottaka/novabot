@@ -13,6 +13,6 @@ namespace NovaBot.Repositories.interfaces
         Task<string> ProcessRequest(SlackEventRequestModel request);
         Task GetUserList();
         Task SendMessage(string message, string channel);
+        Task SendMessage(SlackEventRequestModel quote, string quoteVoteUid);
     }
-
 }

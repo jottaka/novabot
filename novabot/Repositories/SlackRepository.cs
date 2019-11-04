@@ -24,30 +24,20 @@ namespace NovaBot.Repositories
             _context = context;
         }
 
-        public async Task<string> ProcessRequest(SlackEventRequestModel request)
+        
+        public async Task SendMessage(SlackEventRequestModel quote, string quoteVoteUid)
         {
             try
             {
-                string response = null;
-                switch (request.type)
-                {
-                    case "url_verification":
-                        response = request.challenge;
-                        break;
-                    case "message":
-                        break;
-                    default:
-                        break;
-                }
-                return response;
+                var message = $"Nova quote: '{quote.text}'; User para votar o id: {quoteVoteUid}!";
+                MessageToChannelMode messageModel = prepareMessageToChannelModel(message, quote.channel);
+                await _slackApiHelper.SendMessageToChannel(messageModel);
             }
             catch (System.Exception)
             {
-
                 throw;
             }
         }
-
 
         public async Task SendMessage(string message, string channel)
         {
@@ -64,17 +54,6 @@ namespace NovaBot.Repositories
             }
         }
 
-        private MessageToChannelMode prepareMessageToChannelModel(string message, string channel)
-        {
-            var token = _context.Configurations.FirstOrDefault().BotAccessToken;
-            var messageModel = new MessageToChannelMode()
-            {
-                token = token,
-                channel = channel,
-                text = message
-            };
-            return messageModel;
-        }
 
         public async Task GetUserList()
         {
@@ -122,6 +101,18 @@ namespace NovaBot.Repositories
             }
         }
 
+        public async Task<string> ProcessRequest(SlackEventRequestModel request)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<string> AddQuoteAsync(string message)
+        {
+            throw new System.NotImplementedException();
+        }
+
+
+
         private async Task saveAuthCode(string code)
         {
             if (!await _context.Configurations.AnyAsync())
@@ -142,9 +133,18 @@ namespace NovaBot.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<string> AddQuoteAsync(string message)
+        private MessageToChannelMode prepareMessageToChannelModel(string message, string channel)
         {
-            throw new System.NotImplementedException();
+            var token = _context.Configurations.FirstOrDefault().BotAccessToken;
+            var messageModel = new MessageToChannelMode()
+            {
+                token = token,
+                channel = channel,
+                text = message
+            };
+            return messageModel;
         }
+
+
     }
 }

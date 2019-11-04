@@ -5,6 +5,7 @@ export class UserModel {
     userId: string;
     ranking: number;
     upVotes: number;
+    downVotes: number;
     snitchScore: number;
     numberOfQuotes: number;
 }

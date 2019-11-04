@@ -16,13 +16,18 @@ namespace NovaBot.Controllers
     {
         private readonly ILogger<QuotesController> _logger;
         private readonly IQuoteRepository _quotesRepository;
+        private readonly ISlackRepository _slackRepository;
+
 
         public QuotesController(
             ILogger<QuotesController> logger,
-            IQuoteRepository quotesRepository)
+            IQuoteRepository quotesRepository,
+            ISlackRepository slackRepository
+            )
         {
             _logger = logger;
             _quotesRepository = quotesRepository;
+            _slackRepository = slackRepository;
         }
 
     
@@ -32,7 +37,8 @@ namespace NovaBot.Controllers
         {
             try
             {
-                 await _quotesRepository.ReceiveNewQuoteEvent(quote);
+                 var quoteVoteUid = await _quotesRepository.ReceiveNewQuoteEvent(quote);
+                new Task(async () => await _slackRepository.SendMessage(quote, quoteVoteUid));
                 return Ok();
             }
             catch (Exception e)

@@ -24,11 +24,16 @@ namespace NovaBot.Repositories
             _context = context;
         }
 
-        public async Task ReceiveNewQuoteEvent(SlackEventRequestModel quoteEvent)
+        /// <summary>
+        /// Retunr the QuoteVoteUid To make it possible to vote using it
+        /// </summary>
+        /// <param name="quoteEvent"></param>
+        /// <returns></returns>
+        public async Task<String> ReceiveNewQuoteEvent(SlackEventRequestModel quoteEvent)
         {
             try
             {
-                await processNewQuoteEvent(quoteEvent);
+                return await processNewQuoteEvent(quoteEvent);
             }
             catch (global::System.Exception)
             {
@@ -395,7 +400,7 @@ namespace NovaBot.Repositories
         }
 
 
-        private async Task processNewQuoteEvent(SlackEventRequestModel quoteEvent)
+        private async Task<string> processNewQuoteEvent(SlackEventRequestModel quoteEvent)
         {
             string authorName = null;
             string authorId = null;
@@ -433,10 +438,10 @@ namespace NovaBot.Repositories
                     }
                 }
             }
-            await saveQuoteInDb(quoteEvent, authorId, content);
+           return await saveQuoteInDb(quoteEvent, authorId, content);
         }
 
-        private async Task saveQuoteInDb(SlackEventRequestModel quoteEvent, string authorId, string content)
+        private async Task<string> saveQuoteInDb(SlackEventRequestModel quoteEvent, string authorId, string content)
         {
             string quoteVoteUid = await getUniqueQuoteVoteId();
 
@@ -450,6 +455,7 @@ namespace NovaBot.Repositories
             };
             await _context.AddAsync(quote);
             await _context.SaveChangesAsync();
+            return quoteVoteUid;
         }
 
         private async Task<string> getUniqueQuoteVoteId()
