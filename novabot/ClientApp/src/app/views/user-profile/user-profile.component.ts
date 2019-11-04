@@ -46,7 +46,7 @@ export class UserProfileComponent implements OnInit {
         var request = new ListQuoteRequestModel();
         request.OrderBy = OrderByEnum.ByDate;
         request.UserId = userId;
-        request.N = 10;
+        request.N = 100;
         request.Page = 0;
 
         this.quoteService.listQuotesByUser(request, userId)

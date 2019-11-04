@@ -38,7 +38,7 @@ namespace NovaBot.Controllers
             try
             {
                  var quoteVoteUid = await _quotesRepository.ReceiveNewQuoteEvent(quote);
-                new Task(async () => await _slackRepository.SendMessage(quote, quoteVoteUid));
+                 await _slackRepository.SendMessage(quote, quoteVoteUid);
                 return Ok();
             }
             catch (Exception e)

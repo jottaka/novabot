@@ -23,7 +23,7 @@ export class MainPageComponent implements OnInit {
 
     getQuotesList() {
         let request = new ListQuoteRequestModel();
-        request.N = 10;
+        request.N = 100;
         request.OrderBy = OrderByEnum.ByDate;
         request.Page = 0;
 

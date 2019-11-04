@@ -30,10 +30,10 @@ namespace NovaBot.Repositories
             try
             {
                 var message = $"Nova quote: '{quote.text}'; User para votar o id: {quoteVoteUid}!";
-                MessageToChannelMode messageModel = prepareMessageToChannelModel(message, quote.channel_id);
+                MessageToChannelMode messageModel = await prepareMessageToChannelModel(message, quote.channel_id);
                 await _slackApiHelper.SendMessageToChannel(messageModel);
             }
-            catch (System.Exception)
+            catch (System.Exception e)
             {
                 throw;
             }
@@ -43,7 +43,7 @@ namespace NovaBot.Repositories
         {
             try
             {
-                MessageToChannelMode messageModel = prepareMessageToChannelModel(message, channel);
+                MessageToChannelMode messageModel = await prepareMessageToChannelModel(message, channel);
                 await _slackApiHelper.SendMessageToChannel(messageModel);
 
             }
@@ -133,16 +133,18 @@ namespace NovaBot.Repositories
             await _context.SaveChangesAsync();
         }
 
-        private MessageToChannelMode prepareMessageToChannelModel(string message, string channel)
+        private async Task<MessageToChannelMode> prepareMessageToChannelModel(string message, string channel)
         {
-            var token = _context.Configurations.FirstOrDefault().BotAccessToken;
-            var messageModel = new MessageToChannelMode()
-            {
-                token = token,
-                channel = channel,
-                text = message
-            };
-            return messageModel;
+       
+                var token = (await _context.Configurations.FirstOrDefaultAsync()).BotAccessToken;
+                var messageModel = new MessageToChannelMode()
+                {
+                    token = token,
+                    channel = channel,
+                    text = message
+                };
+                return messageModel;
+            
         }
 
 

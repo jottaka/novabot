@@ -33,8 +33,8 @@ namespace NovaBot.Models
                 QuoteId = QuoteId,
                 Upvotes= Upvotes,
                 UserId=UserId,
-                UserName = User.Name,
-                UserPicture=User.ProfilePicture_192
+                UserName = User is null?null:User.Name,
+                UserPicture= User is null ? null : User.ProfilePicture_192
             };
             return toReturn;
         }
